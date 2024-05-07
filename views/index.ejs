@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>fireplug</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #2e2e2e; /* 배경을 #2e2e2e로 설정 */
+                font-family: Arial, sans-serif;
+            }
+            #chart-container {
+                width: 250px; /* 차트 컨테이너의 너비 설정 */
+                height: 94vh; /* 차트 컨테이너의 높이 설정 */
+                margin: 20px; /* 여백 설정 */
+                background-color: #2e2e2e; /* 배경을 #2e2e2e로 설정 */
+                float: right; /* 오른쪽 정렬 */
+                border: 3px solid #191919; /* 검정색 3픽셀 짜리 테두리 설정 */
+                overflow-y: auto; /* 내용이 차트 컨테이너를 넘어갈 경우 스크롤바 표시 */
+                display: flex; /* 가운데 정렬을 위해 flex 사용 */
+                flex-direction: column; /* 수직 방향으로 정렬 */
+                align-items: center; /* 수직 가운데 정렬 */
+            }
+            .highlight {
+                color: #ffffff; /* 텍스트를 흰색으로 설정 */
+                background-color: #424242; /* 강조 배경색 설정 */
+                padding: 3px 100px; /* 강조 배경 사이즈 설정 */
+                margin: 3px; /* 단락 사이의 여백 설정 */
+                display: inline-block; /* 블록 요소를 인라인으로 변환 */
+            }
+        </style>    
+    </head>
+    <body>
+        <div id="chart-container">
+            <!-- 차트가 들어갈 공간 -->
+        </div>
+    
+        <script>
+            // 실시간 데이터 생성 및 출력
+            var chartContainer = document.getElementById('chart-container');
+            setInterval(function() {
+                var value = Math.floor(Math.random() * 100); // 랜덤한 값 생성 (0에서 100 사이)
+                var paragraph = document.createElement('p'); // 새로운 단락 요소 생성
+                paragraph.style.textAlign = "center"; // 가운데 정렬 설정
+                var valueSpan = document.createElement('span'); // 강조 텍스트 요소 생성
+                valueSpan.textContent = value; // 텍스트 설정
+                valueSpan.classList.add('highlight'); // highlight 클래스 추가
+                paragraph.appendChild(valueSpan); // 강조 텍스트를 단락에 추가
+                chartContainer.appendChild(paragraph); // 차트 컨테이너에 추가
+                chartContainer.scrollTop = chartContainer.scrollHeight; // 스크롤을 항상 아래로 유지
+                var allHighlights = document.querySelectorAll('.highlight'); // 모든 강조 요소 가져오기
+                allHighlights.forEach(function(element) { // 모든 요소에 대해 반복
+                });
+            }, 1000); // 1초마다 실행
+        </script>
+    </body>
+</html>
