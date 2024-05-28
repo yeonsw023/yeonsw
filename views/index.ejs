@@ -1,59 +1,168 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>fireplug</title>
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                background-color: #2e2e2e; /* 배경을 #2e2e2e로 설정 */
-                font-family: Arial, sans-serif;
-            }
-            #chart-container {
-                width: 250px; /* 차트 컨테이너의 너비 설정 */
-                height: 94vh; /* 차트 컨테이너의 높이 설정 */
-                margin: 20px; /* 여백 설정 */
-                background-color: #2e2e2e; /* 배경을 #2e2e2e로 설정 */
-                float: right; /* 오른쪽 정렬 */
-                border: 3px solid #191919; /* 검정색 3픽셀 짜리 테두리 설정 */
-                overflow-y: auto; /* 내용이 차트 컨테이너를 넘어갈 경우 스크롤바 표시 */
-                display: flex; /* 가운데 정렬을 위해 flex 사용 */
-                flex-direction: column; /* 수직 방향으로 정렬 */
-                align-items: center; /* 수직 가운데 정렬 */
-            }
-            .highlight {
-                color: #ffffff; /* 텍스트를 흰색으로 설정 */
-                background-color: #424242; /* 강조 배경색 설정 */
-                padding: 3px 100px; /* 강조 배경 사이즈 설정 */
-                margin: 3px; /* 단락 사이의 여백 설정 */
-                display: inline-block; /* 블록 요소를 인라인으로 변환 */
-            }
-        </style>    
-    </head>
-    <body>
-        <div id="chart-container">
-            <!-- 차트가 들어갈 공간 -->
-        </div>
+!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+
+  
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  
+
+  <script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
     
-        <script>
-            // 실시간 데이터 생성 및 출력
-            var chartContainer = document.getElementById('chart-container');
-            setInterval(function() {
-                var value = Math.floor(Math.random() * 100); // 랜덤한 값 생성 (0에서 100 사이)
-                var paragraph = document.createElement('p'); // 새로운 단락 요소 생성
-                paragraph.style.textAlign = "center"; // 가운데 정렬 설정
-                var valueSpan = document.createElement('span'); // 강조 텍스트 요소 생성
-                valueSpan.textContent = value; // 텍스트 설정
-                valueSpan.classList.add('highlight'); // highlight 클래스 추가
-                paragraph.appendChild(valueSpan); // 강조 텍스트를 단락에 추가
-                chartContainer.appendChild(paragraph); // 차트 컨테이너에 추가
-                chartContainer.scrollTop = chartContainer.scrollHeight; // 스크롤을 항상 아래로 유지
-                var allHighlights = document.querySelectorAll('.highlight'); // 모든 강조 요소 가져오기
-                allHighlights.forEach(function(element) { // 모든 요소에 대해 반복
-                });
-            }, 1000); // 1초마다 실행
-        </script>
-    </body>
+    var option;
+
+    const categories = (function () {
+  let now = new Date();
+  let res = [];
+  let len = 10;
+  while (len--) {
+    res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
+    now = new Date(+now - 2000);
+  }
+  return res;
+})();
+const categories2 = (function () {
+  let res = [];
+  let len = 10;
+  while (len--) {
+    res.push(10 - len - 1);
+  }
+  return res;
+})();
+const data = (function () {
+  let res = [];
+  let len = 10;
+  while (len--) {
+    res.push(Math.round(Math.random() * 1000));
+  }
+  return res;
+})();
+const data2 = (function () {
+  let res = [];
+  let len = 0;
+  while (len < 10) {
+    res.push(+(Math.random() * 10 + 5).toFixed(1));
+    len++;
+  }
+  return res;
+})();
+option = {
+  title: {
+    text: 'Dynamic Data'
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      label: {
+        backgroundColor: '#283b56'
+      }
+    }
+  },
+  legend: {},
+  toolbox: {
+    show: true,
+    feature: {
+      dataView: { readOnly: false },
+      restore: {},
+      saveAsImage: {}
+    }
+  },
+  dataZoom: {
+    show: false,
+    start: 0,
+    end: 100
+  },
+  xAxis: [
+    {
+      type: 'category',
+      boundaryGap: true,
+      data: categories
+    },
+    {
+      type: 'category',
+      boundaryGap: true,
+      data: categories2
+    }
+  ],
+  yAxis: [
+    {
+      type: 'value',
+      scale: true,
+      name: 'Price',
+      max: 30,
+      min: 0,
+      boundaryGap: [0.2, 0.2]
+    },
+    {
+      type: 'value',
+      scale: true,
+      name: 'Order',
+      max: 1200,
+      min: 0,
+      boundaryGap: [0.2, 0.2]
+    }
+  ],
+  series: [
+    {
+      name: 'Dynamic Bar',
+      type: 'bar',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      data: data
+    },
+    {
+      name: 'Dynamic Line',
+      type: 'line',
+      data: data2
+    }
+  ]
+};
+app.count = 11;
+setInterval(function () {
+  let axisData = new Date().toLocaleTimeString().replace(/^\D*/, '');
+  data.shift();
+  data.push(Math.round(Math.random() * 1000));
+  data2.shift();
+  data2.push(+(Math.random() * 10 + 5).toFixed(1));
+  categories.shift();
+  categories.push(axisData);
+  categories2.shift();
+  categories2.push(app.count++);
+  myChart.setOption({
+    xAxis: [
+      {
+        data: categories
+      },
+      {
+        data: categories2
+      }
+    ],
+    series: [
+      {
+        data: data
+      },
+      {
+        data: data2
+      }
+    ]
+  });
+}, 2100);
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
 </html>
